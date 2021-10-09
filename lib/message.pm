@@ -1,4 +1,4 @@
-package SubCommand::message;
+package message;
 
 use strict;
 use warnings;
@@ -8,7 +8,7 @@ use Encode::IMAPUTF7;
 
 use FindBin qw( $RealBin );
 use lib "$RealBin/lib";
-use base qw( SubCommand::Base );
+use base qw( Command );
 
 sub execute {
   my ( $self, $folder, $uid ) = @_;

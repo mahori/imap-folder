@@ -1,4 +1,4 @@
-package SubCommand::export;
+package export_year;
 
 use strict;
 use warnings;
@@ -9,12 +9,12 @@ use File::Spec::Functions qw( catfile );
 
 use FindBin qw( $RealBin );
 use lib "$RealBin/lib";
-use base qw( SubCommand::Base );
+use base qw( Command );
 
 sub execute {
-  my ( $self, $folder, $directory ) = @_;
+  my ( $self, $folder, $directory, $year ) = @_;
 
-  unless ( defined $folder && defined $directory ) {
+  unless ( defined $folder && defined $directory && defined $year ) {
     return;
   }
 
@@ -23,7 +23,9 @@ sub execute {
   from_to( $folder, 'UTF-8', 'IMAP-UTF-7' );
   $client->select( $folder ) or die $!;
 
-  my @messages = $client->sort( 'DATE', 'US-ASCII', 'ALL' ) or die $!;
+  my $since    = sprintf 'SENTSINCE 01-Jan-%d',  $year;
+  my $before   = sprintf 'SENTBEFORE 01-Jan-%d', $year + 1;
+  my @messages = $client->sort( 'DATE', 'US-ASCII', $since, $before ) or die $!;
   unless ( @messages ) {
     return;
   }

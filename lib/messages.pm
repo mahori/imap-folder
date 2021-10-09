@@ -1,4 +1,4 @@
-package SubCommand::messages_date;
+package messages;
 
 use strict;
 use warnings;
@@ -8,7 +8,7 @@ use Encode::IMAPUTF7;
 
 use FindBin qw( $RealBin );
 use lib "$RealBin/lib";
-use base qw( SubCommand::Base );
+use base qw( Command );
 
 sub execute {
   my ( $self, $folder ) = @_;
@@ -22,12 +22,12 @@ sub execute {
   from_to( $folder, 'UTF-8', 'IMAP-UTF-7' );
   $client->select( $folder ) or die $!;
 
-  my @messages = $client->sort( 'DATE', 'US-ASCII', 'ALL' ) or die $!;
+  my @messages = $client->messages or die $!;
   unless ( @messages ) {
     return;
   }
 
-  foreach my $message ( @messages ) {
+  foreach my $message ( sort { $a <=> $b } @messages ) {
     say $message;
   }
 }

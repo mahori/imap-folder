@@ -1,4 +1,4 @@
-package SubCommand::Base;
+package Command;
 
 use strict;
 use warnings;
