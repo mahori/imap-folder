@@ -13,8 +13,7 @@ getopts( 'sh:p:U:P:', \%opts );
 my $command = shift;
 eval "use $command";
 if ( $@ ) {
-  say STDERR $!;
-  exit -1;
+  die $@;
 }
 
 my $subcommand = "$command"->new( \%opts );

@@ -21,9 +21,9 @@ sub execute {
   my $client = $self->{client};
 
   from_to( $folder, 'UTF-8', 'IMAP-UTF-7' );
-  $client->select( $folder ) or die $!;
+  $client->select( $folder ) or die $@;
 
-  my @messages = $client->sort( 'DATE', 'US-ASCII', 'ALL' ) or die $!;
+  my @messages = $client->sort( 'DATE', 'US-ASCII', 'ALL' ) or die $@;
   unless ( @messages ) {
     return;
   }
@@ -44,7 +44,7 @@ sub execute {
     say STDERR "$basename : $uid";
 
     my $filename = catfile( $directory, $basename );
-    $client->message_to_file( $filename, $message ) or die $!;
+    $client->message_to_file( $filename, $message ) or die $@;
 
     $index++;
   }

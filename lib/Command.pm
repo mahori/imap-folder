@@ -13,7 +13,7 @@ sub new {
                                       Password => $args->{P},
                                       Ssl      => $args->{s},
                                       Uid      => 1 )
-    or die $!;
+    or die $@;
 
   unless ( defined $client ) {
     return undef;
@@ -33,7 +33,7 @@ sub DESTROY {
   my $client = $self->{client};
 
   if ( defined $client && $client->IsConnected ) {
-    $client->logout or die $!;
+    $client->logout or die $@;
   }
 }
 

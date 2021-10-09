@@ -19,7 +19,7 @@ sub execute {
   my $client = $self->{client};
 
   from_to( $folder, 'UTF-8', 'IMAP-UTF-7' );
-  $client->create( $folder ) or die $!;
+  $client->create( $folder ) or die $@;
 }
 
 1;

@@ -15,7 +15,7 @@ sub execute {
 
   my $client = $self->{client};
 
-  my @folders = $client->folders or die $!;
+  my @folders = $client->folders or die $@;
   unless ( @folders ) {
     return;
   }

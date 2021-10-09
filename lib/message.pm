@@ -20,9 +20,9 @@ sub execute {
   my $client = $self->{client};
 
   from_to( $folder, 'UTF-8', 'IMAP-UTF-7' );
-  $client->select( $folder ) or die $!;
+  $client->select( $folder ) or die $@;
 
-  my $message = $client->message_string( $uid ) or die $!;
+  my $message = $client->message_string( $uid ) or die $@;
   unless ( $message ) {
     return;
   }
