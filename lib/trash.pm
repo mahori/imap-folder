@@ -18,14 +18,14 @@ sub execute {
 
   my $client = $self->{client};
 
-  from_to( $folder, 'UTF-8', 'IMAP-UTF-7' );
-  $client->select( $folder ) or die $@;
-
   my @folders = $client->folders_hash or die $@;
   my @trash   = grep { grep { $_ eq '\\Trash' } @{$_->{attrs}} } @folders;
   unless ( scalar @trash == 1 ) {
     return;
   }
+
+  from_to( $folder, 'UTF-8', 'IMAP-UTF-7' );
+  $client->select( $folder ) or die $@;
 
   $client->move( $trash[0]->{name}, $uid ) or die $@;
 

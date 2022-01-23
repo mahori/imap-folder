@@ -2,7 +2,6 @@ package export;
 
 use strict;
 use warnings;
-use feature qw( say );
 use Encode qw( from_to );
 use Encode::IMAPUTF7;
 use File::Spec::Functions qw( catfile );
@@ -51,10 +50,13 @@ sub execute {
     my $basename = sprintf $format, $index;
     my $uid      = sprintf $format, $message;
 
-    say STDERR "$basename : $uid";
+    my $file = catfile( $directory, $basename );
 
-    my $filename = catfile( $directory, $basename );
-    $client->message_to_file( $filename, $message ) or die $@;
+    print STDERR $basename, ' : ';
+
+    $client->message_to_file( $file, $message ) or die $@;
+
+    print STDERR $uid, "\n";
 
     $index++;
   }

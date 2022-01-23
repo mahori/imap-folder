@@ -19,10 +19,8 @@ sub new {
     die $@;
   }
 
-  my $self = {};
+  my $self = { client => $client };
   bless $self, $class;
-
-  $self->{client} = $client;
 
   return $self;
 }

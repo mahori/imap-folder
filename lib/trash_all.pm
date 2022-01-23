@@ -18,6 +18,12 @@ sub execute {
 
   my $client = $self->{client};
 
+  my @folders = $client->folders_hash or die $@;
+  my @trash   = grep { grep { $_ eq '\\Trash' } @{$_->{attrs}} } @folders;
+  unless ( scalar @trash == 1 ) {
+    return;
+  }
+
   from_to( $folder, 'UTF-8', 'IMAP-UTF-7' );
   $client->select( $folder ) or die $@;
 
@@ -31,12 +37,6 @@ sub execute {
 
   my @messages = $client->messages or die $@;
   unless ( @messages ) {
-    return;
-  }
-
-  my @folders = $client->folders_hash or die $@;
-  my @trash   = grep { grep { $_ eq '\\Trash' } @{$_->{attrs}} } @folders;
-  unless ( scalar @trash == 1 ) {
     return;
   }
 
