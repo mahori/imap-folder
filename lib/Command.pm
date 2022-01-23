@@ -15,8 +15,8 @@ sub new {
                                       Uid      => 1 )
     or die $@;
 
-  unless ( defined $client ) {
-    return undef;
+  unless ( $client->IsAuthenticated ) {
+    die $@;
   }
 
   my $self = {};
@@ -32,7 +32,7 @@ sub DESTROY {
 
   my $client = $self->{client};
 
-  if ( defined $client && $client->IsConnected ) {
+  if ( defined $client ) {
     $client->logout or die $@;
   }
 }

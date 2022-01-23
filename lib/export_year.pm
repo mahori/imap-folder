@@ -23,20 +23,30 @@ sub execute {
   from_to( $folder, 'UTF-8', 'IMAP-UTF-7' );
   $client->select( $folder ) or die $@;
 
+  my $count = $client->message_count;
+  unless ( defined $count ) {
+    die $@;
+  }
+  if ( $count == 0 ) {
+    return;
+  }
+
   my $since    = sprintf 'SENTSINCE 01-Jan-%d',  $year;
   my $before   = sprintf 'SENTBEFORE 01-Jan-%d', $year + 1;
   my @messages = $client->sort( 'DATE', 'US-ASCII', $since, $before ) or die $@;
   unless ( @messages ) {
     return;
   }
-
-  my $count  = scalar @messages;
-  my $length = length $count;
-  my $format = sprintf '%%0%dd', $length;
+  if ( scalar @messages == 0 ) {
+    return;
+  }
 
   unless ( -d $directory ) {
     mkdir $directory or die $!;
   }
+
+  my $length = length scalar @messages;
+  my $format = sprintf '%%0%dd', $length;
 
   my $index = 1;
   foreach my $message ( @messages ) {

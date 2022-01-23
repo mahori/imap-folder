@@ -22,6 +22,14 @@ sub execute {
   from_to( $folder, 'UTF-8', 'IMAP-UTF-7' );
   $client->select( $folder ) or die $@;
 
+  my $count = $client->message_count;
+  unless ( defined $count ) {
+    die $@;
+  }
+  if ( $count == 0 ) {
+    return;
+  }
+
   my @messages = $client->messages or die $@;
   unless ( @messages ) {
     return;

@@ -11,6 +11,10 @@ my %opts;
 getopts( 'sh:p:U:P:', \%opts );
 
 my $command = shift;
+unless ( defined $command ) {
+  exit 1;
+}
+
 eval "use $command";
 if ( $@ ) {
   die $@;
