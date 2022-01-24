@@ -3,8 +3,6 @@ package folders;
 use strict;
 use warnings;
 use feature qw( say );
-use Encode qw( from_to );
-use Encode::IMAPUTF7;
 
 use FindBin qw( $RealBin );
 use lib "$RealBin/lib";
@@ -20,7 +18,7 @@ sub execute {
     return;
   }
 
-  @folders = map { from_to( $_, 'IMAP-UTF-7', 'UTF-8' ); $_ } @folders;
+  @folders = map { $self->folder_decode( $_ ) } @folders;
   foreach my $folder ( sort @folders ) {
     say $folder;
   }

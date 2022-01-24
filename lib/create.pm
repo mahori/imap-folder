@@ -2,8 +2,6 @@ package create;
 
 use strict;
 use warnings;
-use Encode qw( from_to );
-use Encode::IMAPUTF7;
 
 use FindBin qw( $RealBin );
 use lib "$RealBin/lib";
@@ -18,7 +16,7 @@ sub execute {
 
   my $client = $self->{client};
 
-  from_to( $folder, 'UTF-8', 'IMAP-UTF-7' );
+  $folder = $self->folder_encode( $folder );
 
   if ( $client->exists( $folder ) ) {
     return;
