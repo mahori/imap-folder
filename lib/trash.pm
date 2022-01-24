@@ -7,6 +7,12 @@ use FindBin qw( $RealBin );
 use lib "$RealBin/lib";
 use base qw( Command );
 
+sub options {
+  my $class = shift;
+
+  return 'folder', 'uid';
+}
+
 sub execute {
   my ( $self, $folder, $uid ) = @_;
 

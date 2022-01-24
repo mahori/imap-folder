@@ -8,6 +8,12 @@ use FindBin qw( $RealBin );
 use lib "$RealBin/lib";
 use base qw( Command );
 
+sub options {
+  my $class = shift;
+
+  return;
+}
+
 sub execute {
   my $self = shift;
 
