@@ -2,8 +2,6 @@ package delete;
 
 use strict;
 use warnings;
-use Encode qw( from_to );
-use Encode::IMAPUTF7;
 
 use FindBin qw( $RealBin );
 use lib "$RealBin/lib";
@@ -18,8 +16,7 @@ sub execute {
 
   my $client = $self->{client};
 
-  from_to( $folder, 'UTF-8', 'IMAP-UTF-7' );
-  $client->select( $folder ) or die $@;
+  $self->folder_select( $folder );
 
   my $count = $client->message_count;
   unless ( defined $count ) {
@@ -29,7 +26,7 @@ sub execute {
     return;
   }
 
-  $client->close or die $@;
+  $self->folder_close( $folder );
 
   $client->delete( $folder ) or die $@;
 }

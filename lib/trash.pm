@@ -2,8 +2,6 @@ package trash;
 
 use strict;
 use warnings;
-use Encode qw( from_to );
-use Encode::IMAPUTF7;
 
 use FindBin qw( $RealBin );
 use lib "$RealBin/lib";
@@ -24,8 +22,7 @@ sub execute {
     return;
   }
 
-  from_to( $folder, 'UTF-8', 'IMAP-UTF-7' );
-  $client->select( $folder ) or die $@;
+  $self->folder_select( $folder );
 
   $client->move( $trash[0]->{name}, $uid ) or die $@;
 

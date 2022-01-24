@@ -61,4 +61,48 @@ sub folder_decode {
   return $folder;
 }
 
+sub folder_select {
+  my ( $self, $folder ) = @_;
+
+  unless ( defined $folder ) {
+    return;
+  }
+
+  my $client = $self->{client};
+
+  unless ( $client->IsAuthenticated ) {
+    return;
+  }
+
+  $folder = $self->folder_encode( $folder );
+
+  unless ( $client->exists( $folder ) ) {
+    return;
+  }
+
+  $client->select( $folder ) or die $@;
+}
+
+sub folder_close {
+  my ( $self, $folder ) = @_;
+
+  unless ( defined $folder ) {
+    return;
+  }
+
+  my $client = $self->{client};
+
+  unless ( $client->IsSelected ) {
+    return;
+  }
+
+  $folder = $self->folder_encode( $folder );
+
+  unless ( $client->exists( $folder ) ) {
+    return;
+  }
+
+  $client->close or die $@;
+}
+
 1;
